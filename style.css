@@ -22,18 +22,14 @@
     cursor: not-allowed;
   }
 
-.cart-item-added {
-    animation: 3s add-cart-item;
-}
-
-.cart-item-removed {
-    animation: 3s remove-cart-item;
+.cart_item {
+    animation: .5s add-cart-item;
 }
 
 @keyframes add-cart-item {
     from {
-      margin-left: -200px;
-      margin-right: 200px;
+      margin-right: -200px;
+      margin-left: 200px;
       opacity: 0;
     }
     to {
@@ -43,10 +39,7 @@
     }
 }
 
-@keyframes remove-cart-item {
-    to {
-        margin-left: -200px;
-        margin-right: 0;
-        opacity: 1;
-    }
+.cart-item-added {
+    animation: 3s add-cart-item;
 }
+

@@ -1,6 +1,6 @@
 'use strict';
 
-const cart = [];
+let cart = [];
 const cartDOM = document.querySelector('.cart');
 const addToCartButtons = document.querySelectorAll('[data-action="ADD_TO_CART"]');
 
@@ -13,8 +13,10 @@ addToCartButtons.forEach((button)=>{
             price: itemDOM.querySelector('.product-price').innerText,
             quantity: 1
         }
-
-        cartDOM.insertAdjacentHTML('beforeend', `
+        
+        const isInCart = cart.filter(cartitem => cartitem.name === item.name).length > 0;
+        if(isInCart === false){
+            cartDOM.insertAdjacentHTML('beforeend', `
             <div class="cart_item">
                 <img class="cart_item_image" src="${item.image}">
                 <h3 class="cart_item_name">${item.name}</h3>
@@ -26,8 +28,48 @@ addToCartButtons.forEach((button)=>{
             </div>
         `);
 
-        cart.push(item)
+        cart.push(item);
+        button.disabled = true;
+        }
         
+        const cartItemsDOM = cartDOM.querySelectorAll('.cart_item');
+        cartItemsDOM.forEach((cartItemDOM)=>{
+            if(cartItemDOM.querySelector('.cart_item_name').innerText === item.name){
+                cartItemDOM.querySelector('[data-action="INCREASE"]').addEventListener('click', ()=>{
+                    cart.forEach((cartItem)=>{
+                        if(cartItem.name === item.name){
+                            cartItemDOM.querySelector('.cart_item_quantity').innerText = ++cartItem.quantity;
+                        }
+                    });
+                });
+
+                cartItemDOM.querySelector('[data-action="DECREASE"]').addEventListener('click', ()=>{
+                    cart.forEach((cartItem)=>{
+                        if(cartItem.name === item.name){
+                            if(cartItem.quantity > 1){
+                                cartItemDOM.querySelector('.cart_item_quantity').innerText = --cartItem.quantity;
+                            } else {
+                                setTimeout(() => cartItemDOM.remove(), 500)
+                                cart = cart.filter(cartItem => cartItem.name !== item.name);
+                                button.disabled = false;
+                            }
+                        }
+                    });
+                });
+
+                cartItemDOM.querySelector('[data-action="REMOVE"]').addEventListener('click', ()=>{
+                    cart.forEach((cartItem)=>{
+                        if(cartItem.name === item.name){
+                                cartItemDOM.remove()
+                                cart = cart.filter(cartItem => cartItem.name !== item.name);
+                                button.disabled = false;
+                        }
+                    });
+                });
+                
+            }
+        })
+
     })
 })
 

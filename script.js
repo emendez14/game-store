@@ -21,6 +21,8 @@ if(cart.length > 0){
             </div>
         `);
 
+
+
         addToCartButtons.forEach((button)=>{
             const itemDOM = button.parentNode;
 
@@ -43,10 +45,10 @@ if(cart.length > 0){
                                 if(cartItem.name === item.name){
                                     if(cartItem.quantity > 1){
                                         cartItemDOM.querySelector('.cart_item_quantity').innerText = --cartItem.quantity;
+                                        localStorage.setItem('cart', JSON.stringify(cart));
                                     } else {
                                         setTimeout(() => cartItemDOM.remove(), 500)
                                         cart = cart.filter(cartItem => cartItem.name !== item.name);
-                                        localStorage.setItem('cart', JSON.stringify(cart));
                                         button.disabled = false;
                                     }
                                 }
